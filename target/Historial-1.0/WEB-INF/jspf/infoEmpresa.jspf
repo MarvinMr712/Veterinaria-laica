@@ -1,0 +1,12 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+
+<section class="contact-info">
+        <h2>Información de Contacto</h2>
+<p>¡Estaremos encantados de escucharte! Aquí tienes nuestra información de contacto:</p>
+        <ul>
+            <li><strong>Teléfono:</strong> (123) 456-7890</li>
+            <li><strong>Correo Electrónico:</strong> info@laika.com</li>
+            <li><strong>Dirección:</strong>Av. Juan Velasco Alvarado 1377, Villa EL Salvador 15831</li>
+        </ul>
+</section>
