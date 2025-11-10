@@ -30,7 +30,7 @@ public class DaoUsuarioImpl implements DaoUsuario {
     @Override
     public List<Usuario> usuarioSel() {
 
-        List<Usuario> lista = null;
+        List<Usuario> lista = new ArrayList<>();;
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ")
                 .append("idUsuario,")
@@ -41,20 +41,22 @@ public class DaoUsuarioImpl implements DaoUsuario {
                 .append("FROM usuario");
        
         try (Connection cn = conexion.getConexion()) {
-            PreparedStatement ps = cn.prepareStatement(sql.toString());
-            ResultSet rs = ps.executeQuery();
-            lista = new ArrayList<>();
-            while (rs.next()) {
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(rs.getInt(1));
-                usuario.setNombreUsuario(rs.getString(2));
-                usuario.setCorreoUsuario(rs.getString(3));
-                usuario.setTelefono(rs.getString(4));
-                usuario.setContra(rs.getString(5));
-                lista.add(usuario);
-            }
+        PreparedStatement ps = cn.prepareStatement(sql.toString());
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Usuario usuario = new Usuario();
+            usuario.setIdUsuario(rs.getInt(1));
+            usuario.setNombreUsuario(rs.getString(2));
+            usuario.setCorreoUsuario(rs.getString(3));
+            usuario.setTelefono(rs.getString(4));
+            usuario.setContra(rs.getString(5));
+            lista.add(usuario);
+        }
+        
         } catch (Exception e) {
             mensaje = e.getMessage();
+            System.err.println("Error en usuarioSel(): " + e.getMessage());
         }
         return lista;
 

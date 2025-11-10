@@ -27,40 +27,38 @@ public class DaoVeterinarioImpl implements DaoVeterinario {
     }
 
     @Override
-    public List<Veterinario> veterinarioSel() {
+public List<Veterinario> veterinarioSel() {
+    List<Veterinario> lista = new ArrayList<>();
+    StringBuilder sql = new StringBuilder();
+    sql.append("SELECT ")
+        .append("idVeterinario,")
+        .append("nombreVeterinario,")
+        .append("correo,")
+        .append("CAST(AES_DECRYPT(contraseña,'AES') AS CHAR),")
+        .append("sueldo,")
+        .append("hora_ingreso,")
+        .append("hora_salida ")
+        .append("FROM veterinario");
 
-        List<Veterinario> lista = null;
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT ")
-                .append("idVeterinario,")
-                .append("nombreVeterinario,")
-                .append("correo,")
-                .append("CAST(AES_DECRYPT(contraseña,'AES') AS CHAR),")
-                .append("sueldo,")
-                .append("hora_ingreso,")
-                .append("hora_salida ")
-                .append("FROM veterinario");
-        try (Connection cn = conexion.getConexion()) {
-            PreparedStatement ps = cn.prepareStatement(sql.toString());
-            ResultSet rs = ps.executeQuery();
-            lista = new ArrayList<>();
-            while (rs.next()) {
-                Veterinario veterinario = new Veterinario();
-                veterinario.setIdVeterinario(rs.getInt(1));
-                veterinario.setNombreVeterinario(rs.getString(2));
-                veterinario.setCorreo(rs.getString(3));
-                veterinario.setContra(rs.getString(4));
-                veterinario.setSueldo(rs.getString(5));
-                veterinario.setHora_ingreso(rs.getString(6));
-                veterinario.setHora_salida(rs.getString(7));
-                lista.add(veterinario);
-            }
-        } catch (Exception e) {
-            mensaje = e.getMessage();
+    try (Connection cn = conexion.getConexion()) {
+        PreparedStatement ps = cn.prepareStatement(sql.toString());
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Veterinario veterinario = new Veterinario();
+            veterinario.setIdVeterinario(rs.getInt(1));
+            veterinario.setNombreVeterinario(rs.getString(2));
+            veterinario.setCorreo(rs.getString(3));
+            veterinario.setContra(rs.getString(4));
+            veterinario.setSueldo(rs.getString(5));
+            veterinario.setHora_ingreso(rs.getString(6));
+            veterinario.setHora_salida(rs.getString(7));
+            lista.add(veterinario);
         }
-        return lista;
-
+    } catch (Exception e) {
+        mensaje = e.getMessage();
     }
+    return lista;
+}
 
     @Override
     public Veterinario veterinarioGet(Integer id) {

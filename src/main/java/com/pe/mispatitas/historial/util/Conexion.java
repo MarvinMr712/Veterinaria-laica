@@ -15,15 +15,13 @@ public class Conexion {
         try {
             Class.forName(DRIVER).newInstance();
             c = DriverManager.getConnection(URL, USER, PASS);
+            c.setAutoCommit(true);
         } catch (ClassNotFoundException
                 | IllegalAccessException
                 | InstantiationException
                 | SQLException e) {
             throw new SQLException(e.getMessage());
         }
-
         return c;
-
     }
-
 }

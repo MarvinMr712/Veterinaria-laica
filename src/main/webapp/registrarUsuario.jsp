@@ -15,7 +15,6 @@
         <link href="css/estilo1.css" rel="stylesheet" type="text/css"/>
         <%@include file="WEB-INF/jspf/enlaces.jspf" %>
 
-
     </head>
     <body>
         <div class="madre" id="madre" >

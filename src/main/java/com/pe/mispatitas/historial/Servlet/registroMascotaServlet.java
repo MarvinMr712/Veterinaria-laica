@@ -33,31 +33,44 @@ public class registroMascotaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        DaoMascota dao = new DaoMascotaImpl();
+        throws ServletException, IOException {
+    response.setContentType("text/html;charset=UTF-8");
+    DaoMascota dao = new DaoMascotaImpl();
 
-        String nombreMascota = request.getParameter("nombreMascota");
-        String razaMascota = request.getParameter("razaMascota");
-        String generoMascota = request.getParameter("generoMascota");
-        String fechaMascota = request.getParameter("fechaMascota");
-        String descripcionMascota = request.getParameter("descripcionMascota");
-        int idUsuario = Integer.valueOf(request.getParameter("idUsuario"));
-        String mensajeAlerta;
-        Part part = request.getPart("imagenMascota");
-        InputStream inputStream = part.getInputStream();
-        if ("".equals(nombreMascota) || "".equals(razaMascota) || "".equals(generoMascota) || "".equals(fechaMascota) || "".equals(descripcionMascota)) {
-            mensajeAlerta = "todos los campos son obligatorios";
-            request.setAttribute("mensajeAlerta", mensajeAlerta);
-            request.getRequestDispatcher("registrarMascota.jsp").forward(request, response);
-        } else {
-            Mascota cat = new Mascota(null, idUsuario, nombreMascota, fechaMascota, razaMascota, descripcionMascota, generoMascota, inputStream);
-            dao.mascotaIns(cat);
-            response.sendRedirect(request.getContextPath() + "/indexUsuario.jsp");
-        }
+    String nombreMascota = request.getParameter("nombreMascota");
+    String razaMascota = request.getParameter("razaMascota");
+    String generoMascota = request.getParameter("generoMascota");
+    String fechaMascota = request.getParameter("fechaMascota");
+    String descripcionMascota = request.getParameter("descripcionMascota");
+    String especieMascota = request.getParameter("especieMascota"); // nuevo
+    int idUsuario = Integer.valueOf(request.getParameter("idUsuario"));
+    String mensajeAlerta;
+    Part part = request.getPart("imagenMascota");
+    InputStream inputStream = part.getInputStream();
 
-// Mascota(null, 1, "dori","2023-10-11", "payaso", "holamundo", "f", "hola")
+    if ("".equals(nombreMascota) || "".equals(razaMascota) || "".equals(generoMascota) 
+        || "".equals(fechaMascota) || "".equals(descripcionMascota) || "".equals(especieMascota)) {
+        mensajeAlerta = "Todos los campos son obligatorios";
+        request.setAttribute("mensajeAlerta", mensajeAlerta);
+        request.getRequestDispatcher("registrarMascota.jsp").forward(request, response);
+    } else {
+        // Constructor vacío + setters
+        Mascota cat = new Mascota();
+        cat.setIdMascota(null);
+        cat.setIdUsuario(idUsuario);
+        cat.setNombreMascota(nombreMascota);
+        cat.setFechaNacimiento(fechaMascota);
+        cat.setRazaMascota(razaMascota);
+        cat.setDescripcion(descripcionMascota);
+        cat.setSexo(generoMascota);
+        cat.setEspecie(especieMascota); // NUEVO
+        cat.setFoto(inputStream);
+
+        dao.mascotaIns(cat);
+        response.sendRedirect(request.getContextPath() + "/listarMascota?idUsuario=" + idUsuario);
     }
+}
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

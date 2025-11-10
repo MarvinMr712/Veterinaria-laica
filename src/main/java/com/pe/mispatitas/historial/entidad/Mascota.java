@@ -15,8 +15,9 @@ public class Mascota {
     private String razaMascota;
     private String descripcion;
     private String sexo;
+    private String especie;
     private InputStream foto;
-    private String imagenBase64;  // Nuevo atributo
+    private String imagenBase64;  
     private String nombreUsuario;
     private String tratamiento;
     private String fechaHistorial;
@@ -24,7 +25,7 @@ public class Mascota {
     public Mascota() {
     }
 
-    public Mascota(Integer idMascota, Integer idUsuario, String nombreMascota, String fechaNacimiento, String razaMascota, String descripcion, String sexo, InputStream foto) {
+    public Mascota(Integer idMascota, Integer idUsuario, String nombreMascota, String fechaNacimiento, String razaMascota, String descripcion, String sexo, String especie, InputStream foto) {
         this.idMascota = idMascota;
         this.idUsuario = idUsuario;
         this.nombreMascota = nombreMascota;
@@ -32,6 +33,7 @@ public class Mascota {
         this.razaMascota = razaMascota;
         this.descripcion = descripcion;
         this.sexo = sexo;
+        this.especie = especie;
         this.foto = foto;
     }
 
@@ -91,6 +93,14 @@ public class Mascota {
         this.sexo = sexo;
     }
 
+    public String getEspecie() {
+        return especie;
+    }
+
+    public void setEspecie(String especie) {
+        this.especie = especie;
+    }
+
     public InputStream getFoto() {
         return foto;
     }
@@ -130,6 +140,4 @@ public class Mascota {
     public void setFechaHistorial(String fechaHistorial) {
         this.fechaHistorial = fechaHistorial;
     }
-    
-
 }

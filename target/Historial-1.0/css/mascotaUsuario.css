@@ -37,9 +37,9 @@ contenedorHistorialUsuario{
     margin-bottom: 15px;
 }
 .fotoMascota{
-    width: 300px;
-    height: 300px;
-    object-fit: cover;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
 
 }
 .tablaHistorial{

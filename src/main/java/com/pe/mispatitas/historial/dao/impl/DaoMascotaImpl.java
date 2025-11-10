@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
-import java.sql.*;
+import java.sql.Blob;
 
 /**
  *
@@ -36,6 +36,7 @@ public class DaoMascotaImpl implements DaoMascota {
                 .append("razaMascota,")
                 .append("descripcion,")
                 .append("sexo,")
+                .append("especie,")
                 .append("foto ")
                 .append("FROM mascota");
         try (Connection cn = conexion.getConexion()) {
@@ -51,6 +52,7 @@ public class DaoMascotaImpl implements DaoMascota {
                 mascota.setRazaMascota(rs.getString(5));
                 mascota.setDescripcion(rs.getString(6));
                 mascota.setSexo(rs.getString(7));
+                mascota.setEspecie(rs.getString(8));
                 Blob blob = rs.getBlob("foto");
                 if (blob != null) {
                     try (InputStream inputStream = blob.getBinaryStream()) {
@@ -63,7 +65,6 @@ public class DaoMascotaImpl implements DaoMascota {
             mensaje = e.getMessage();
         }
         return lista;
-
     }
 
     @Override
@@ -79,6 +80,7 @@ public class DaoMascotaImpl implements DaoMascota {
                 .append("razaMascota,")
                 .append("descripcion,")
                 .append("sexo,")
+                .append("especie,")
                 .append("foto ")
                 .append("FROM mascota ")
                 .append("WHERE idMascota = ?");
@@ -95,13 +97,13 @@ public class DaoMascotaImpl implements DaoMascota {
                 mascota.setRazaMascota(rs.getString(5));
                 mascota.setDescripcion(rs.getString(6));
                 mascota.setSexo(rs.getString(7));
-                mascota.setFoto((InputStream) rs.getBlob(8));
+                mascota.setEspecie(rs.getString(8));
+                mascota.setFoto((InputStream) rs.getBlob(9));
             }
         } catch (Exception e) {
             mensaje = e.getMessage();
         }
         return mascota;
-
     }
 
     @Override
@@ -114,8 +116,9 @@ public class DaoMascotaImpl implements DaoMascota {
                 .append("razaMascota,")
                 .append("descripcion,")
                 .append("sexo,")
+                .append("especie,")
                 .append("foto ")
-                .append(") VALUES (?,?,?,?,?,?,?)");
+                .append(") VALUES (?,?,?,?,?,?,?,?)");
         try (Connection cn = conexion.getConexion()) {
             PreparedStatement ps = cn.prepareStatement(sql.toString());
             ps.setInt(1, mascota.getIdUsuario());
@@ -124,7 +127,8 @@ public class DaoMascotaImpl implements DaoMascota {
             ps.setString(4, mascota.getRazaMascota());
             ps.setString(5, mascota.getDescripcion());
             ps.setString(6, mascota.getSexo());
-            ps.setBlob(7, mascota.getFoto());
+            ps.setString(7, mascota.getEspecie());
+            ps.setBlob(8, mascota.getFoto());
             int resultado = ps.executeUpdate();
             if (resultado == 0) {
                 mensaje = "Cero registros agregados";
@@ -133,12 +137,10 @@ public class DaoMascotaImpl implements DaoMascota {
             mensaje = e.getMessage();
         }
         return mensaje;
-
     }
 
     @Override
     public String mascotaUpd(Mascota mascota) {
-
         StringBuilder sql = new StringBuilder();
         sql.append("UPDATE mascota SET ")
                 .append("idUsuario = ?,")
@@ -147,6 +149,7 @@ public class DaoMascotaImpl implements DaoMascota {
                 .append("razaMascota = ?,")
                 .append("descripcion = ?,")
                 .append("sexo = ?,")
+                .append("especie = ?,")
                 .append("foto = ? ")
                 .append("WHERE idMascota = ?");
         try (Connection cn = conexion.getConexion()) {
@@ -157,8 +160,9 @@ public class DaoMascotaImpl implements DaoMascota {
             ps.setString(4, mascota.getRazaMascota());
             ps.setString(5, mascota.getDescripcion());
             ps.setString(6, mascota.getSexo());
-            ps.setBlob(7, mascota.getFoto());
-            ps.setInt(8, mascota.getIdMascota());
+            ps.setString(7, mascota.getEspecie());
+            ps.setBlob(8, mascota.getFoto());
+            ps.setInt(9, mascota.getIdMascota());
             int resultado = ps.executeUpdate();
             if (resultado == 0) {
                 mensaje = "Cero registros actualizados";
@@ -167,7 +171,6 @@ public class DaoMascotaImpl implements DaoMascota {
             mensaje = e.getMessage();
         }
         return mensaje;
-
     }
 
     @Override
@@ -192,5 +195,4 @@ public class DaoMascotaImpl implements DaoMascota {
     public String getMensaje() {
         return mensaje;
     }
-
 }
